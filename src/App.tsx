@@ -1,10 +1,11 @@
 import React from "react";
+import Album from "./Album";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <h1>BGM Controller</h1>
+      <Album />
     </div>
   );
 }
