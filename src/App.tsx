@@ -1,13 +1,10 @@
 import React from "react";
-import Album from "./Album";
-import "./App.css";
+import Header from "./components/organisms/Header";
+import MainTemplate from "./components/templates/MainTemplate";
+import VideoList from "./components/organisms/VideoList";
 
 function App() {
-  return (
-    <div className="App">
-      <Album />
-    </div>
-  );
+  return <MainTemplate header={<Header />} main={<VideoList />} />;
 }
 
 export default App;
