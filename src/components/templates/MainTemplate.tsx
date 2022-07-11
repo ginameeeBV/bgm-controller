@@ -31,7 +31,7 @@ function MainTemplate({ header, main, footer }: IProps) {
       )}
       {main && (
         <Box component="main" sx={styles.main}>
-          <Stack>{main}</Stack>
+          <Stack height="100%">{main}</Stack>
         </Box>
       )}
       {footer && <Box component="footer">{footer}</Box>}
