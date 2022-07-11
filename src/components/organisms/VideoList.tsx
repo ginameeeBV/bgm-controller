@@ -1,13 +1,14 @@
 import { Container, Grid } from "@mui/material";
 import { useAtom } from "jotai";
 import React from "react";
-import { videosAtom } from "../../stores";
-import VideoCard from "../molecules/VideoCard";
+import { urlsAtom } from "../../stores/videos";
+import VideoCard from "./VideoCard";
 import EmptyList from "../molecules/EmptyList";
+import { v4 as uuidv4 } from "uuid";
 
 function VideoList() {
-  const [videos] = useAtom(videosAtom);
-  const isEmpty = videos.length === 0;
+  const [urls] = useAtom(urlsAtom);
+  const isEmpty = urls.length === 0;
 
   return (
     <Container sx={{ py: 3, height: "100%" }} maxWidth={false}>
@@ -15,9 +16,9 @@ function VideoList() {
         <EmptyList />
       ) : (
         <Grid container spacing={4}>
-          {videos.map((video) => (
-            <Grid item xs={12} sm={6} md={3}>
-              <VideoCard {...video} />
+          {urls.map((url) => (
+            <Grid item xs={12} sm={6} md={3} key={uuidv4()}>
+              <VideoCard url={url} />
             </Grid>
           ))}
         </Grid>

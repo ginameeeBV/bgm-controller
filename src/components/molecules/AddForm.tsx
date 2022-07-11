@@ -3,15 +3,15 @@ import { Divider, IconButton, InputBase, Paper } from "@mui/material";
 import { useAtom } from "jotai";
 import React, { FormEvent } from "react";
 import { useState } from "react";
-import { videosAtom } from "../../stores";
+import { urlsAtom } from "../../stores/videos";
 
 function AddForm() {
-  const [videos, setVideos] = useAtom(videosAtom);
+  const [urls, setUrls] = useAtom(urlsAtom);
   const [url, setUrl] = useState<string>("");
 
   const handleAddVideo = (e: FormEvent) => {
     e.preventDefault();
-    setVideos([...videos, { url }]);
+    setUrls([...urls, url]);
   };
 
   const handlePlayVideo = () => {
@@ -51,6 +51,7 @@ function AddForm() {
         sx={{ p: "10px" }}
         aria-label="add"
         type="submit"
+        disabled={!url}
       >
         <Add />
       </IconButton>
