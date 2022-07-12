@@ -8,6 +8,7 @@ interface IProps {
   value?: number;
   onFadeOut?: () => void;
   onVolumeChange?: (value: number) => void;
+  width?: number | string;
 }
 
 const MAX_VALUE = 100;
@@ -18,6 +19,7 @@ function VolumeController({
   value,
   onFadeOut,
   onVolumeChange,
+  width = "100%",
 }: IProps) {
   const [volume, setVolume] = useState<number>(defaultValue);
   useEffect(() => {
@@ -42,7 +44,7 @@ function VolumeController({
       sx={{ px: 2 }}
       alignItems="center"
       justifyContent="center"
-      minWidth="100%"
+      minWidth={width}
     >
       <Stack direction="row" spacing={0.5} alignItems="center" component="span">
         <VolumeUp />
@@ -67,7 +69,7 @@ function VolumeController({
         }}
         onChange={handleSlideChange}
       />
-      <Stack direction="row" component="span" spacing={0.5}>
+      {onFadeOut && (
         <Button
           size="small"
           variant="contained"
@@ -76,7 +78,7 @@ function VolumeController({
         >
           Fade Out
         </Button>
-      </Stack>
+      )}
     </Stack>
   );
 }
