@@ -7,7 +7,7 @@ interface IProps {
   onPause?: () => unknown;
   onStop?: () => unknown;
 }
-function ControllButtons({
+function ControlButtons({
   onPlay = () => undefined,
   onPause = () => undefined,
   onStop = () => undefined,
@@ -27,4 +27,4 @@ function ControllButtons({
   );
 }
 
-export default ControllButtons;
+export default ControlButtons;
