@@ -35,12 +35,18 @@ function VideoCard(props: IProps) {
   return (
     <Card
       sx={{
-        height: "100%",
+        width: "100%",
+        height: "330px",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <CardMedia>
+      <CardMedia
+        sx={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <ReactPlayer width="100%" height="100%" url={url} playing={playing} />
       </CardMedia>
       <CardActions>
