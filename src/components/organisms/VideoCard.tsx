@@ -13,7 +13,7 @@ interface IProps {
 function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState(defaultVolume);
-  const playerRef = useRef<any>();
+  const playerRef = useRef<ReactPlayer>(null);
   const volumeFadeOffTimerRef = useRef<number>();
 
   const handlePlay = () => {
