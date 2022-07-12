@@ -11,7 +11,9 @@ function AddForm() {
 
   const handleAddVideo = (e: FormEvent) => {
     e.preventDefault();
-    setUrls([...urls, url]);
+    if (!urls.includes(url)) {
+      setUrls([...urls, url]);
+    }
   };
 
   const handlePlayVideo = () => {
