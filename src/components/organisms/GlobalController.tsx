@@ -4,10 +4,13 @@ import React, { ChangeEvent } from "react";
 import {
   currPlayedUrlAtom,
   fadeRatioAtom,
+  isOnMicAtom,
+  minVolumeForSpeakAtom,
   prevPlayedUrlAtom,
   volumeAtom,
 } from "../../stores/videos";
 import MicButton from "../atoms/MicButton";
+import MicOffButton from "../atoms/MuteButton";
 import PauseButton from "../atoms/PauseButton";
 import PlayButton from "../atoms/PlayButton";
 import VolumeController from "../molecules/VolumeController";
@@ -17,9 +20,13 @@ function GlobalController() {
   const [, setVolume] = useAtom(volumeAtom);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
   const [prevPlayedUrl, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
+  const [isOnMic, setIsOnMic] = useAtom(isOnMicAtom);
+  const [minVolumeForSpeak, setMinVolumeForSpeak] = useAtom(
+    minVolumeForSpeakAtom
+  );
 
   const handleSpeak = () => {
-    // TODO: fadeout hook 호출하기 (ratio: 적당히, min: fadeRatio)
+    setIsOnMic(!isOnMic);
   };
 
   const handlePlay = () => {
@@ -42,6 +49,13 @@ function GlobalController() {
     setFadeRatio(Number(value));
   };
 
+  const handleChangeMinVolumeForSpeak = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setMinVolumeForSpeak(Number(value));
+  };
+
   return (
     <Box>
       <Stack
@@ -50,7 +64,11 @@ function GlobalController() {
         alignItems="center"
         sx={{ height: "auto", py: 2 }}
       >
-        <MicButton onClick={handleSpeak} />
+        {isOnMic ? (
+          <MicOffButton onClick={handleSpeak} />
+        ) : (
+          <MicButton onClick={handleSpeak} />
+        )}
         <PlayButton onClick={handlePlay} />
         <PauseButton onClick={handlePause} />
         <Stack direction="row" sx={{ width: "auto" }} spacing={2}>
@@ -70,6 +88,21 @@ function GlobalController() {
             type="number"
             value={fadeRatio}
             onChange={handleChangeFadeRatio}
+            inputProps={{
+              min: 0,
+              max: 100,
+            }}
+          />
+          <TextField
+            label="Music Volume For Speaking"
+            sx={{ width: 180 }}
+            type="number"
+            value={minVolumeForSpeak}
+            onChange={handleChangeMinVolumeForSpeak}
+            inputProps={{
+              min: 0,
+              max: 100,
+            }}
           />
         </Stack>
       </Stack>
