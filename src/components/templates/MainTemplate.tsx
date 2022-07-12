@@ -23,6 +23,7 @@ const styles = {
     position: "fixed",
     width: "100%",
     bottom: 0,
+    heigth: "auto",
   },
 };
 
