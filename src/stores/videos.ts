@@ -1,8 +1,7 @@
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-export const urlsAtom = atom<string[], string[], void>([], (_get, set, arg) => {
-  set(urlsAtom, arg);
-});
+export const urlsAtom = atomWithStorage<string[]>("hwahaeDevDayBGM", []);
 
 export const volumeAtom = atom<number, number, void>(100, (_get, set, arg) => {
   set(volumeAtom, arg);
