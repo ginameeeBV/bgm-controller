@@ -4,7 +4,6 @@ import { useAtom } from "jotai";
 import { urlsAtom } from "../../stores/videos";
 import VideoCard from "./VideoCard";
 import EmptyList from "../molecules/EmptyList";
-import { v4 as uuidv4 } from "uuid";
 
 function VideoList() {
   const [urls, setUrls] = useAtom(urlsAtom);
@@ -21,7 +20,7 @@ function VideoList() {
       ) : (
         <Grid container spacing={4}>
           {urls.map((url) => (
-            <Grid item xs={12} sm={6} md={3} key={uuidv4()}>
+            <Grid item xs={12} sm={6} md={3} key={url}>
               <Box sx={{ position: "relative" }}>
                 <Button
                   sx={{
