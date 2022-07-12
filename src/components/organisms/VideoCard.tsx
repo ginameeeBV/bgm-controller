@@ -17,7 +17,6 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const playerRef = useRef<ReactPlayer>(null);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
-  const [, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const {
     volume,
     setVolume,
