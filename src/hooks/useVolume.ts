@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const MAX_VOLUME = 100;
 const MIN_VOLUME = 0;
@@ -8,19 +8,22 @@ function useVolume(defaultVolume: number) {
   const volumeFadeOffTimerRef = useRef<number>();
   const volumeFadeOnTimerRef = useRef<number>();
 
-  const initFadeInOut = () => {
+  const initFadeInOut = useCallback(() => {
     stopFadeIn();
     stopFadeOut();
-  };
+  }, []);
 
-  const startFadeOut = (destVolume = MIN_VOLUME) => {
-    initFadeInOut();
-    volumeFadeOffTimerRef.current = window.setInterval(() => {
-      setVolume((prevVolume) =>
-        prevVolume > destVolume ? prevVolume - 4 : prevVolume
-      );
-    }, 80);
-  };
+  const startFadeOut = useCallback(
+    (destVolume = MIN_VOLUME) => {
+      initFadeInOut();
+      volumeFadeOffTimerRef.current = window.setInterval(() => {
+        setVolume((prevVolume) =>
+          prevVolume > destVolume ? prevVolume - 4 : prevVolume
+        );
+      }, 80);
+    },
+    [setVolume, initFadeInOut]
+  );
 
   const stopFadeOut = () => {
     if (volumeFadeOffTimerRef.current) {
@@ -29,14 +32,17 @@ function useVolume(defaultVolume: number) {
     }
   };
 
-  const startFadeIn = (destVolume = MAX_VOLUME) => {
-    initFadeInOut();
-    volumeFadeOnTimerRef.current = window.setInterval(() => {
-      setVolume((prevVolume) =>
-        prevVolume < destVolume ? prevVolume + 4 : prevVolume
-      );
-    }, 80);
-  };
+  const startFadeIn = useCallback(
+    (destVolume = MAX_VOLUME) => {
+      initFadeInOut();
+      volumeFadeOnTimerRef.current = window.setInterval(() => {
+        setVolume((prevVolume) =>
+          prevVolume < destVolume ? prevVolume + 4 : prevVolume
+        );
+      }, 80);
+    },
+    [setVolume, initFadeInOut]
+  );
 
   const stopFadeIn = () => {
     if (volumeFadeOnTimerRef.current) {

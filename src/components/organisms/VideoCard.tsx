@@ -5,7 +5,11 @@ import VolumeController from "../molecules/VolumeController";
 import ControlButtons from "../molecules/ControlButtons";
 import useVolume from "../../hooks/useVolume";
 import { useAtom } from "jotai";
-import { currPlayedUrlAtom, prevPlayedUrlAtom } from "../../stores/videos";
+import {
+  currPlayedUrlAtom,
+  isOnMicAtom,
+  minVolumeForSpeakAtom,
+} from "../../stores/videos";
 
 interface IProps {
   url: string;
@@ -17,6 +21,8 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const playerRef = useRef<ReactPlayer>(null);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
+  const [isOnMic] = useAtom(isOnMicAtom);
+  const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
   const {
     volume,
     setVolume,
@@ -64,7 +70,17 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
       setPlaying(true);
       startFadeIn();
     }
-  }, [currPlayedUrl, url, startFadeOut]);
+  }, [currPlayedUrl, url, startFadeOut, startFadeIn]);
+
+  useEffect(() => {
+    if (isOnMic) {
+      startFadeOut(minVolumeForSpeak);
+    } else {
+      if (playing) {
+        startFadeIn();
+      }
+    }
+  }, [isOnMic, startFadeOut, startFadeIn, minVolumeForSpeak, playing]);
 
   return (
     <Card

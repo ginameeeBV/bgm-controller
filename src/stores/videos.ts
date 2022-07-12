@@ -27,3 +27,17 @@ export const prevPlayedUrlAtom = atom<string, string, void>(
     set(prevPlayedUrlAtom, arg);
   }
 );
+
+export const isOnMicAtom = atom<boolean, boolean, void>(
+  false,
+  (_get, set, arg) => {
+    set(isOnMicAtom, arg);
+  }
+);
+
+export const minVolumeForSpeakAtom = atom<number, number, void>(
+  20,
+  (_get, set, arg) => {
+    set(minVolumeForSpeakAtom, arg);
+  }
+);
