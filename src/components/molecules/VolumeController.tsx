@@ -44,7 +44,7 @@ function VolumeController({
       sx={{ px: 2 }}
       alignItems="center"
       justifyContent="center"
-      minWidth={width}
+      width={width}
     >
       <Stack direction="row" spacing={0.5} alignItems="center" component="span">
         <VolumeUp />
