@@ -23,20 +23,22 @@ function VideoList() {
           {urls.map((url) => (
             <Grid item xs={12} sm={6} md={3} key={uuidv4()}>
               <Box sx={{ position: "relative" }}>
+                <VideoCard url={url} />
                 <Button
                   sx={{
                     position: "absolute",
                     top: "16px",
                     right: "16px",
                     "&:hover": {
-                      color: "darkgrey",
+                      color: "white",
+                      backgroundColor: "primary.main",
                     },
+                    backgroundColor: "white",
                   }}
                   onClick={() => handleRemoveVideoItem(url)}
                 >
                   <Delete />
                 </Button>
-                <VideoCard url={url} />
               </Box>
             </Grid>
           ))}
