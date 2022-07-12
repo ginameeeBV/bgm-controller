@@ -1,6 +1,8 @@
-import { Pause, PlayArrow, Stop } from "@mui/icons-material";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import React from "react";
+import PauseButton from "../atoms/PauseButton";
+import PlayButton from "../atoms/PlayButton";
+import StopButton from "../atoms/StopButton";
 
 interface IProps {
   onPlay?: () => unknown;
@@ -13,16 +15,10 @@ function ControlButtons({
   onStop = () => undefined,
 }: IProps) {
   return (
-    <Stack direction="row" justifyContent="space-around" minWidth="100%">
-      <Button size="small" onClick={onPlay}>
-        <PlayArrow />
-      </Button>
-      <Button size="small" onClick={onPause}>
-        <Pause />
-      </Button>
-      <Button size="small" onClick={onStop}>
-        <Stop />
-      </Button>
+    <Stack direction="row" justifyContent="space-around">
+      <PlayButton onClick={onPlay} />
+      <PauseButton onClick={onPause} />
+      <StopButton onClick={onStop} />
     </Stack>
   );
 }
