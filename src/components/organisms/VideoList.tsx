@@ -29,8 +29,10 @@ function VideoList() {
                     top: "16px",
                     right: "16px",
                     "&:hover": {
-                      color: "darkgrey",
+                      color: "white",
+                      backgroundColor: "primary.main",
                     },
+                    backgroundColor: "white",
                   }}
                   onClick={() => handleRemoveVideoItem(url)}
                 >
