@@ -37,7 +37,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
     }
   };
 
-  const handlesFadeOut = () => {
+  const handleFadeOut = () => {
     volumeFadeOffTimerRef.current = window.setInterval(() => {
       setVolume((prevVolume) => prevVolume - 4);
     }, 80);
@@ -81,7 +81,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
           <VolumeController
             value={volume}
             onVolumeChange={handleChangeVolume}
-            onFadeOut={handlesFadeOut}
+            onFadeOut={handleFadeOut}
           />
         </Stack>
       </CardActions>
