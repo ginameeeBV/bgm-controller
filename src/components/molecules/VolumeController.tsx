@@ -1,23 +1,40 @@
 import { VolumeUp } from "@mui/icons-material";
 import { Button, Input, Slider, Stack } from "@mui/material";
-import React from "react";
+import { useEffect } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 interface IProps {
+  defaultValue?: number;
   value?: number;
-  onFadeIn?: () => unknown;
-  onFadeOut?: () => unknown;
-  onChange?: (value: number) => unknown;
+  onFadeOut?: () => void;
+  onVolumeChange?: (value: number) => void;
 }
 
 const MAX_VALUE = 100;
 const MIN_VALUE = 0;
 
 function VolumeController({
-  value = 100,
-  onFadeIn = () => undefined,
-  onFadeOut = () => undefined,
-  onChange = (value: number) => undefined,
+  defaultValue = MAX_VALUE,
+  value,
+  onFadeOut,
+  onVolumeChange,
 }: IProps) {
+  const [volume, setVolume] = useState<number>(defaultValue);
+  useEffect(() => {
+    if (typeof value !== "undefined") {
+      setVolume(value);
+    }
+  }, [value]);
+  const handleSlideChange = (_: Event, newValue: number | number[]) => {
+    const newVolume = Array.isArray(newValue) ? newValue[0] : newValue;
+    setVolume(newVolume);
+    onVolumeChange?.(newVolume);
+  };
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const newVolume = Number(e.currentTarget.value);
+    setVolume(newVolume);
+    onVolumeChange?.(newVolume);
+  };
   return (
     <Stack
       spacing={2}
@@ -36,28 +53,21 @@ function VolumeController({
             min: MIN_VALUE,
           }}
           sx={{ width: 20, textAlign: "center", fontSize: 11 }}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
+          value={volume}
+          onChange={handleInputChange}
         />
       </Stack>
       <Slider
         aria-label="Volume"
-        value={value}
+        value={volume}
         max={MAX_VALUE}
         min={MIN_VALUE}
         sx={{
           display: { xs: "none", md: "none", xl: "unset" },
         }}
+        onChange={handleSlideChange}
       />
       <Stack direction="row" component="span" spacing={0.5}>
-        <Button
-          size="small"
-          variant="contained"
-          sx={{ fontSize: 8 }}
-          onClick={onFadeIn}
-        >
-          Fade In
-        </Button>
         <Button
           size="small"
           variant="contained"
