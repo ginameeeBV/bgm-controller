@@ -23,7 +23,6 @@ function GlobalController() {
   };
 
   const handlePlay = () => {
-    console.log(prevPlayedUrl);
     setCurrPlayedUrl(prevPlayedUrl);
   };
 
