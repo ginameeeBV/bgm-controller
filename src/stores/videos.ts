@@ -14,9 +14,16 @@ export const fadeRatioAtom = atom<number, number, void>(
   }
 );
 
-export const playingAtom = atom<boolean, boolean, void>(
-  false,
+export const currPlayedUrlAtom = atom<string, string, void>(
+  "",
   (_get, set, arg) => {
-    set(playingAtom, arg);
+    set(currPlayedUrlAtom, arg);
+  }
+);
+
+export const prevPlayedUrlAtom = atom<string, string, void>(
+  "",
+  (_get, set, arg) => {
+    set(prevPlayedUrlAtom, arg);
   }
 );

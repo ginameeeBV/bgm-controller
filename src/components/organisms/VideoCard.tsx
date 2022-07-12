@@ -4,6 +4,8 @@ import ReactPlayer from "react-player/youtube";
 import VolumeController from "../molecules/VolumeController";
 import ControlButtons from "../molecules/ControlButtons";
 import useVolume from "../../hooks/useVolume";
+import { useAtom } from "jotai";
+import { currPlayedUrlAtom, prevPlayedUrlAtom } from "../../stores/videos";
 
 interface IProps {
   url: string;
@@ -14,6 +16,8 @@ interface IProps {
 function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const playerRef = useRef<ReactPlayer>(null);
+  const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
+  const [, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const {
     volume,
     setVolume,
@@ -25,6 +29,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
 
   const handlePlay = () => {
     setPlaying(true);
+    setCurrPlayedUrl(url);
     startFadeIn();
   };
 
@@ -52,6 +57,15 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
       setPlaying(false);
     }
   }, [volume]);
+
+  useEffect(() => {
+    if (url !== currPlayedUrl) {
+      startFadeOut();
+    } else {
+      setPlaying(true);
+      startFadeIn();
+    }
+  }, [currPlayedUrl, url, startFadeOut]);
 
   return (
     <Card

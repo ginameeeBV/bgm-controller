@@ -1,7 +1,12 @@
 import { Box, Stack, TextField } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { ChangeEvent, useEffect } from "react";
-import { fadeRatioAtom, playingAtom, volumeAtom } from "../../stores/videos";
+import React, { ChangeEvent } from "react";
+import {
+  currPlayedUrlAtom,
+  fadeRatioAtom,
+  prevPlayedUrlAtom,
+  volumeAtom,
+} from "../../stores/videos";
 import MicButton from "../atoms/MicButton";
 import PauseButton from "../atoms/PauseButton";
 import PlayButton from "../atoms/PlayButton";
@@ -10,20 +15,21 @@ import VolumeController from "../molecules/VolumeController";
 function GlobalController() {
   const [fadeRatio, setFadeRatio] = useAtom(fadeRatioAtom);
   const [, setVolume] = useAtom(volumeAtom);
-  const [, setPlaying] = useAtom(playingAtom);
+  const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
+  const [prevPlayedUrl, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
 
   const handleSpeak = () => {
     // TODO: fadeout hook 호출하기 (ratio: 적당히, min: fadeRatio)
   };
 
   const handlePlay = () => {
-    // TODO: fadeout hook 호출하기 (ratio: 적당히, min: 0)
-    setPlaying(true);
+    console.log(prevPlayedUrl);
+    setCurrPlayedUrl(prevPlayedUrl);
   };
 
   const handlePause = () => {
-    // TODO: fadeout hook 호출하기 (ratio: 적당히, min: 0)
-    setPlaying(false);
+    setPrevPlayedUrl(currPlayedUrl);
+    setCurrPlayedUrl("");
   };
 
   const handleChangeVolume = (value: number) => {
