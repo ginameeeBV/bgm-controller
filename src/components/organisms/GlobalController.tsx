@@ -1,4 +1,4 @@
-import { Box, Stack, TextField } from "@mui/material";
+import { Box, Container, Stack, TextField } from "@mui/material";
 import { useAtom } from "jotai";
 import React, { ChangeEvent } from "react";
 import {
@@ -31,6 +31,9 @@ function GlobalController() {
 
   const handlePlay = () => {
     setCurrPlayedUrl(prevPlayedUrl);
+    if (isOnMic) {
+      setIsOnMic(false);
+    }
   };
 
   const handlePause = () => {
@@ -57,12 +60,13 @@ function GlobalController() {
   };
 
   return (
-    <Box>
+    <Container>
       <Stack
         direction="row"
-        justifyItems="center"
+        justifyContent="center"
         alignItems="center"
         sx={{ height: "auto", py: 2 }}
+        width="100%"
       >
         {isOnMic ? (
           <MicOffButton onClick={handleSpeak} />
@@ -106,7 +110,7 @@ function GlobalController() {
           />
         </Stack>
       </Stack>
-    </Box>
+    </Container>
   );
 }
 
