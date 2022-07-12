@@ -54,12 +54,18 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   return (
     <Card
       sx={{
-        height: "100%",
+        width: "100%",
+        height: "330px",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <CardMedia>
+      <CardMedia
+        sx={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <ReactPlayer
           ref={playerRef}
           width="100%"
