@@ -3,6 +3,7 @@ import { Card, CardActions, CardMedia, Divider, Stack } from "@mui/material";
 import ReactPlayer from "react-player/youtube";
 import VolumeController from "../molecules/VolumeController";
 import ControlButtons from "../molecules/ControlButtons";
+import useVolume from "../../hooks/useVolume";
 
 interface IProps {
   url: string;
@@ -12,12 +13,19 @@ interface IProps {
 
 function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
-  const [volume, setVolume] = useState(defaultVolume);
   const playerRef = useRef<ReactPlayer>(null);
-  const volumeFadeOffTimerRef = useRef<number>();
+  const {
+    volume,
+    setVolume,
+    startFadeIn,
+    stopFadeIn,
+    startFadeOut,
+    stopFadeOut,
+  } = useVolume(defaultVolume);
 
   const handlePlay = () => {
     setPlaying(true);
+    startFadeIn();
   };
 
   const handlePause = () => {
@@ -31,23 +39,17 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
 
   const handleChangeVolume = (newVolume: number) => {
     setVolume(newVolume);
-    if (volumeFadeOffTimerRef.current) {
-      clearInterval(volumeFadeOffTimerRef.current);
-      volumeFadeOffTimerRef.current = undefined;
-    }
+    stopFadeIn();
+    stopFadeOut();
   };
 
   const handleFadeOut = () => {
-    volumeFadeOffTimerRef.current = window.setInterval(() => {
-      setVolume((prevVolume) => prevVolume - 4);
-    }, 80);
+    startFadeOut();
   };
 
   useEffect(() => {
-    if (volume <= 0 && volumeFadeOffTimerRef.current) {
-      clearInterval(volumeFadeOffTimerRef.current);
-      setVolume(0);
-      volumeFadeOffTimerRef.current = undefined;
+    if (volume <= 0) {
+      setPlaying(false);
     }
   }, [volume]);
 
