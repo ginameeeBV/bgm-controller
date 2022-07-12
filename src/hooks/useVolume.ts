@@ -49,6 +49,10 @@ function useVolume(defaultVolume: number) {
     if (volume <= 0) {
       stopFadeOut();
     }
+
+    if (volume >= 100) {
+      stopFadeIn();
+    }
   }, [volume]);
 
   return {
