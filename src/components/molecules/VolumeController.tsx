@@ -1,12 +1,11 @@
 import { VolumeUp } from "@mui/icons-material";
-import { Button, Input, Slider, Stack } from "@mui/material";
+import { Input, Slider, Stack } from "@mui/material";
 import { useEffect } from "react";
 import { ChangeEventHandler, useState } from "react";
 
 interface IProps {
   defaultValue?: number;
   value?: number;
-  onFadeOut?: () => void;
   onVolumeChange?: (value: number) => void;
   width?: number | string;
 }
@@ -17,7 +16,6 @@ const MIN_VALUE = 0;
 function VolumeController({
   defaultValue = MAX_VALUE,
   value,
-  onFadeOut,
   onVolumeChange,
   width = "100%",
 }: IProps) {
@@ -69,16 +67,6 @@ function VolumeController({
         }}
         onChange={handleSlideChange}
       />
-      {onFadeOut && (
-        <Button
-          size="small"
-          variant="contained"
-          sx={{ fontSize: 8 }}
-          onClick={onFadeOut}
-        >
-          Fade Out
-        </Button>
-      )}
     </Stack>
   );
 }

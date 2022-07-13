@@ -63,10 +63,6 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
     stopFadeInOut();
   };
 
-  const handleFadeOut = () => {
-    startFadeOut();
-  };
-
   useEffect(() => {
     if (volume <= 0) {
       setPlaying(false);
@@ -130,7 +126,6 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
           <VolumeController
             value={Math.floor(volume)}
             onVolumeChange={handleChangeVolume}
-            onFadeOut={handleFadeOut}
           />
         </Stack>
       </CardActions>
