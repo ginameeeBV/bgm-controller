@@ -46,8 +46,9 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
 
   const handlePause = () => {
     startFadeOut();
-    setPrevPlayedUrl(currPlayedUrl);
-    if (currPlayedUrl === url) {
+
+    if (currPlayedUrl && currPlayedUrl === url) {
+      setPrevPlayedUrl(currPlayedUrl);
       setCurrPlayedUrl("");
     }
   };

@@ -1,6 +1,6 @@
 import { Container, Stack, TextField } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import {
   currPlayedUrlAtom,
   fadeRatioAtom,
@@ -37,10 +37,11 @@ function GlobalController() {
   };
 
   const handlePause = () => {
-    setPrevPlayedUrl(currPlayedUrl);
+    if (currPlayedUrl) {
+      setPrevPlayedUrl(currPlayedUrl);
+    }
     setCurrPlayedUrl("");
   };
-
   const handleChangeVolume = (value: number) => {
     setVolume(value);
   };
