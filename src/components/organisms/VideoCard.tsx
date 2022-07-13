@@ -31,10 +31,6 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
   const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
     useVolume(defaultVolume);
 
-  useEffect(() => {
-    setVolume(masterVolume);
-  }, [masterVolume, setVolume]);
-
   const handlePlay = () => {
     setPlaying(true);
     if (currPlayedUrl) {
@@ -113,7 +109,7 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
           height="100%"
           url={url}
           playing={playing}
-          volume={volume / 100}
+          volume={(volume * masterVolume) / 10000}
           loop={isLoop}
           onPause={handlePause}
           onPlay={handlePlay}
