@@ -7,7 +7,7 @@ import {
   isOnMicAtom,
   minVolumeForSpeakAtom,
   prevPlayedUrlAtom,
-  volumeAtom,
+  masterVolumeAtom,
 } from "../../stores/videos";
 import MicButton from "../atoms/MicButton";
 import MicOffButton from "../atoms/MuteButton";
@@ -17,7 +17,7 @@ import VolumeController from "../molecules/VolumeController";
 
 function GlobalController() {
   const [fadeRatio, setFadeRatio] = useAtom(fadeRatioAtom);
-  const [, setVolume] = useAtom(volumeAtom);
+  const [, setMasterVolume] = useAtom(masterVolumeAtom);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
   const [prevPlayedUrl, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const [isOnMic, setIsOnMic] = useAtom(isOnMicAtom);
@@ -43,7 +43,7 @@ function GlobalController() {
     setCurrPlayedUrl("");
   };
   const handleChangeVolume = (value: number) => {
-    setVolume(value);
+    setMasterVolume(value);
   };
 
   const handleChangeFadeRatio = (

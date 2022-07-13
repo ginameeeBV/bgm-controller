@@ -1,11 +1,25 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
+import { atomWithStorage, selectAtom } from "jotai/utils";
 
 export const urlsAtom = atomWithStorage<string[]>("hwahaeDevDayBGM", []);
 
-export const volumeAtom = atom<number, number, void>(100, (_get, set, arg) => {
-  set(volumeAtom, arg);
-});
+/**
+ * @description value is percent {n%}
+ */
+export const masterVolumeAtom = atom<number, number, void>(
+  100,
+  (_get, set, arg) => {
+    set(masterVolumeAtom, arg);
+  }
+);
+
+/**
+ * @description value is float {n.n}
+ */
+export const masterVolumeAtomRate = selectAtom(
+  masterVolumeAtom,
+  (volume) => volume / 100
+);
 
 export const fadeRatioAtom = atom<number, number, void>(
   100,

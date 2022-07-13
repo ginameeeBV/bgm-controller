@@ -9,7 +9,7 @@ import {
   currPlayedUrlAtom,
   isOnMicAtom,
   minVolumeForSpeakAtom,
-  volumeAtom,
+  masterVolumeAtomRate,
   prevPlayedUrlAtom,
 } from "../../stores/videos";
 
@@ -26,7 +26,7 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
   const [, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
-  const [masterVolume] = useAtom(volumeAtom);
+  const [masterVolumeRate] = useAtom(masterVolumeAtomRate);
 
   const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
     useVolume(defaultVolume);
@@ -109,7 +109,7 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
           height="100%"
           url={url}
           playing={playing}
-          volume={(volume * masterVolume) / 10000}
+          volume={(volume / 100) * masterVolumeRate}
           loop={isLoop}
           onPause={handlePause}
           onPlay={handlePlay}
