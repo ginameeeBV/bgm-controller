@@ -5,14 +5,26 @@ import { FormEventHandler, ChangeEventHandler } from "react";
 import { useState } from "react";
 import { urlsAtom } from "../../stores/videos";
 
+const YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v=";
+
 function AddForm() {
   const [urls, setUrls] = useAtom(urlsAtom);
   const [url, setUrl] = useState<string>("");
 
   const handleAddVideo: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    const isUrl = /^https?:\/\//.test(url);
+    let videoSrc = url;
+    if (!isUrl) {
+      const isYoutubeId = window.confirm(
+        `do you mean is '${YOUTUBE_URL_BASE}${url}'?`
+      );
+      if (isYoutubeId) {
+        videoSrc = `${YOUTUBE_URL_BASE}${url}`;
+      }
+    }
     if (!urls.includes(url)) {
-      setUrls([...urls, url]);
+      setUrls([...urls, videoSrc]);
     }
     setUrl("");
   };
