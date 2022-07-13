@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { fadeRatioAtom } from "../stores/videos";
 
 const MAX_VOLUME = 100;
@@ -14,20 +14,23 @@ function useVolume(defaultVolume: number) {
   const volumeFadeOffTimerRef = useRef<number>();
   const volumeFadeOnTimerRef = useRef<number>();
 
-  const initFadeInOut = () => {
+  const initFadeInOut = useCallback(() => {
     stopFadeIn();
     stopFadeOut();
-  };
+  }, []);
 
-  const startFadeOut = (destVolume = MIN_VOLUME) => {
-    initFadeInOut();
-    const fadeOutUnit = FADE_IN_OUT_UNIT * (fadeRatio / 100);
-    volumeFadeOffTimerRef.current = window.setInterval(() => {
-      setVolume((prevVolume) =>
-        prevVolume > destVolume ? prevVolume - fadeOutUnit : prevVolume
-      );
-    }, FADE_IN_OUT_INTERVAL);
-  };
+  const startFadeOut = useCallback(
+    (destVolume = MIN_VOLUME) => {
+      initFadeInOut();
+      const fadeOutUnit = FADE_IN_OUT_UNIT * (fadeRatio / 100);
+      volumeFadeOffTimerRef.current = window.setInterval(() => {
+        setVolume((prevVolume) =>
+          prevVolume > destVolume ? prevVolume - fadeOutUnit : prevVolume
+        );
+      }, FADE_IN_OUT_INTERVAL);
+    },
+    [setVolume, initFadeInOut, fadeRatio]
+  );
 
   const stopFadeOut = () => {
     if (volumeFadeOffTimerRef.current) {
@@ -36,15 +39,18 @@ function useVolume(defaultVolume: number) {
     }
   };
 
-  const startFadeIn = (destVolume = MAX_VOLUME) => {
-    initFadeInOut();
-    const fadeInUnit = FADE_IN_OUT_UNIT * (fadeRatio / 100);
-    volumeFadeOnTimerRef.current = window.setInterval(() => {
-      setVolume((prevVolume) =>
-        prevVolume < destVolume ? prevVolume + fadeInUnit : prevVolume
-      );
-    }, FADE_IN_OUT_INTERVAL);
-  };
+  const startFadeIn = useCallback(
+    (destVolume = MAX_VOLUME) => {
+      initFadeInOut();
+      const fadeInUnit = FADE_IN_OUT_UNIT * (fadeRatio / 100);
+      volumeFadeOnTimerRef.current = window.setInterval(() => {
+        setVolume((prevVolume) =>
+          prevVolume < destVolume ? prevVolume + fadeInUnit : prevVolume
+        );
+      }, FADE_IN_OUT_INTERVAL);
+    },
+    [setVolume, initFadeInOut, fadeRatio]
+  );
 
   const stopFadeIn = () => {
     if (volumeFadeOnTimerRef.current) {
