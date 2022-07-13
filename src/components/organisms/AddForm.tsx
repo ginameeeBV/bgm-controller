@@ -1,7 +1,7 @@
 import { Add, YouTube } from "@mui/icons-material";
 import { Divider, IconButton, InputBase, Paper } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { FormEvent } from "react";
+import { FormEvent } from "react";
 import { useState } from "react";
 import { urlsAtom } from "../../stores/videos";
 
@@ -39,11 +39,12 @@ function AddForm() {
         onChange={(e) => setUrl(e.target.value)}
       />
       <IconButton
-        type="submit"
+        type="button"
         sx={{ p: "10px" }}
         aria-label="search"
         onClick={handlePlayVideo}
         disabled={!url}
+        title={"open in youtube"}
       >
         <YouTube />
       </IconButton>
