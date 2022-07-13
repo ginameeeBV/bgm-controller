@@ -60,11 +60,14 @@ function useVolume(defaultVolume: number) {
   };
 
   useEffect(() => {
-    if (volume <= 0) {
+    if (volume <= MIN_VOLUME) {
+      setVolume(MIN_VOLUME);
       stopFadeOut();
+      return;
     }
 
-    if (volume >= 100) {
+    if (volume >= MAX_VOLUME) {
+      setVolume(MAX_VOLUME);
       stopFadeIn();
     }
   }, [volume]);
