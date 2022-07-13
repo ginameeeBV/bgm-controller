@@ -109,7 +109,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
           />
           <Divider />
           <VolumeController
-            value={volume}
+            value={Math.floor(volume)}
             onVolumeChange={handleChangeVolume}
             onFadeOut={handleFadeOut}
           />
