@@ -1,7 +1,7 @@
 import { Add, YouTube } from "@mui/icons-material";
 import { Divider, IconButton, InputBase, Paper } from "@mui/material";
 import { useAtom } from "jotai";
-import { FormEvent } from "react";
+import { FormEventHandler, ChangeEventHandler } from "react";
 import { useState } from "react";
 import { urlsAtom } from "../../stores/videos";
 
@@ -9,11 +9,16 @@ function AddForm() {
   const [urls, setUrls] = useAtom(urlsAtom);
   const [url, setUrl] = useState<string>("");
 
-  const handleAddVideo = (e: FormEvent) => {
+  const handleAddVideo: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (!urls.includes(url)) {
       setUrls([...urls, url]);
     }
+    setUrl("");
+  };
+
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setUrl(e.currentTarget.value);
   };
 
   const handlePlayVideo = () => {
@@ -36,7 +41,7 @@ function AddForm() {
         placeholder="Add Youtube Video URL"
         inputProps={{ "aria-label": "add Youtube video" }}
         value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        onChange={handleInputChange}
       />
       <IconButton
         type="button"
