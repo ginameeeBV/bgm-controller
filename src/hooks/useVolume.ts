@@ -8,21 +8,21 @@ function useVolume(defaultVolume: number) {
   const volumeFadeOffTimerRef = useRef<number>();
   const volumeFadeOnTimerRef = useRef<number>();
 
-  const initFadeInOut = useCallback(() => {
+  const stopFadeInOut = useCallback(() => {
     stopFadeIn();
     stopFadeOut();
   }, []);
 
   const startFadeOut = useCallback(
     (destVolume = MIN_VOLUME) => {
-      initFadeInOut();
+      stopFadeInOut();
       volumeFadeOffTimerRef.current = window.setInterval(() => {
         setVolume((prevVolume) =>
           prevVolume > destVolume ? prevVolume - 4 : prevVolume
         );
       }, 80);
     },
-    [setVolume, initFadeInOut]
+    [setVolume, stopFadeInOut]
   );
 
   const stopFadeOut = () => {
@@ -34,14 +34,14 @@ function useVolume(defaultVolume: number) {
 
   const startFadeIn = useCallback(
     (destVolume = MAX_VOLUME) => {
-      initFadeInOut();
+      stopFadeInOut();
       volumeFadeOnTimerRef.current = window.setInterval(() => {
         setVolume((prevVolume) =>
           prevVolume < destVolume ? prevVolume + 4 : prevVolume
         );
       }, 80);
     },
-    [setVolume, initFadeInOut]
+    [setVolume, stopFadeInOut]
   );
 
   const stopFadeIn = () => {
@@ -68,6 +68,7 @@ function useVolume(defaultVolume: number) {
     stopFadeOut,
     startFadeIn,
     stopFadeIn,
+    stopFadeInOut,
   };
 }
 
