@@ -10,6 +10,7 @@ import {
   isOnMicAtom,
   minVolumeForSpeakAtom,
   volumeAtom,
+  prevPlayedUrlAtom,
 } from "../../stores/videos";
 
 interface IProps {
@@ -22,6 +23,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const playerRef = useRef<ReactPlayer>(null);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
+  const [, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
   const [masterVolume] = useAtom(volumeAtom);
@@ -35,12 +37,19 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
 
   const handlePlay = () => {
     setPlaying(true);
+    if (currPlayedUrl) {
+      setPrevPlayedUrl(currPlayedUrl);
+    }
     setCurrPlayedUrl(url);
     startFadeIn();
   };
 
   const handlePause = () => {
-    setPlaying(false);
+    startFadeOut();
+    setPrevPlayedUrl(currPlayedUrl);
+    if (currPlayedUrl === url) {
+      setCurrPlayedUrl("");
+    }
   };
 
   const handleStop = () => {
@@ -105,6 +114,8 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
           playing={playing}
           volume={volume / 100}
           loop={isLoop}
+          onPause={handlePause}
+          onPlay={handlePlay}
         />
       </CardMedia>
       <CardActions>
