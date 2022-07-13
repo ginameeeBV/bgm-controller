@@ -1,14 +1,14 @@
 import { Pause } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import React from "react";
 
 interface IProps {
   onClick?: () => unknown;
+  disabled?: boolean;
 }
 
-function PauseButton({ onClick = () => undefined }: IProps) {
+function PauseButton({ onClick = () => undefined, disabled = false }: IProps) {
   return (
-    <Button size="small" onClick={onClick}>
+    <Button size="small" disabled={disabled} onClick={onClick}>
       <Pause />
     </Button>
   );

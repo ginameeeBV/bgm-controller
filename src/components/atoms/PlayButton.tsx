@@ -1,14 +1,14 @@
 import { PlayArrow } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import React from "react";
 
 interface IProps {
   onClick?: () => unknown;
+  disabled?: boolean;
 }
 
-function PlayButton({ onClick = () => undefined }: IProps) {
+function PlayButton({ onClick = () => undefined, disabled = false }: IProps) {
   return (
-    <Button size="small" onClick={onClick}>
+    <Button size="small" disabled={disabled} onClick={onClick}>
       <PlayArrow />
     </Button>
   );
