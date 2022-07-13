@@ -23,14 +23,8 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
-  const {
-    volume,
-    setVolume,
-    startFadeIn,
-    stopFadeIn,
-    startFadeOut,
-    stopFadeOut,
-  } = useVolume(defaultVolume);
+  const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
+    useVolume(defaultVolume);
 
   const handlePlay = () => {
     setPlaying(true);
@@ -49,8 +43,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
 
   const handleChangeVolume = (newVolume: number) => {
     setVolume(newVolume);
-    stopFadeIn();
-    stopFadeOut();
+    stopFadeInOut();
   };
 
   const handleFadeOut = () => {
