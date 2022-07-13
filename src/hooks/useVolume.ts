@@ -7,7 +7,7 @@ const MIN_VOLUME = 0;
 const FADE_IN_OUT_INTERVAL = 80;
 const FADE_IN_OUT_UNIT = 4;
 
-function useVolume(defaultVolume: number) {
+function useVolume(defaultVolume = MAX_VOLUME) {
   const [volume, setVolume] = useState(defaultVolume);
   const [fadeRatio] = useAtom(fadeRatioAtom);
 

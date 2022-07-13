@@ -15,13 +15,21 @@ const MAX_VALUE = 100;
 const MIN_VALUE = 0;
 
 function VolumeController({
-  defaultValue = MAX_VALUE,
+  defaultValue = MIN_VALUE,
   value,
   onFadeOut,
   onVolumeChange,
   width = "100%",
 }: IProps) {
-  const [volume, setVolume] = useState<number>(defaultValue);
+  const [volume, setVolume] = useState<number>(() => {
+    if (defaultValue > MAX_VALUE) {
+      return MAX_VALUE;
+    }
+    if (defaultValue < MIN_VALUE) {
+      return MIN_VALUE;
+    }
+    return defaultValue;
+  });
   useEffect(() => {
     if (typeof value !== "undefined") {
       setVolume(value);

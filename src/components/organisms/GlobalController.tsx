@@ -84,7 +84,10 @@ function GlobalController() {
               width: { xs: 100, md: 100, xl: 250 },
             }}
           >
-            <VolumeController onVolumeChange={handleChangeVolume} />
+            <VolumeController
+              onVolumeChange={handleChangeVolume}
+              defaultValue={100}
+            />
           </Stack>
           <TextField
             label="Fade In/Out Speed"
