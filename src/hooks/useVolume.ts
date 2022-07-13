@@ -5,7 +5,7 @@ import { fadeInOutTimeAtom, volumeAtom } from "../stores/videos";
 const MIN_VOLUME = 0;
 const FADE_IN_OUT_UNIT = 2;
 
-function useVolume(defaultValue: number) {
+function useVolume(defaultValue: number = MIN_VOLUME) {
   const [volume, setVolume] = useState(defaultValue);
   const [fadeInOutTime] = useAtom(fadeInOutTimeAtom);
   const [maxVolume] = useAtom(volumeAtom);
@@ -61,8 +61,13 @@ function useVolume(defaultValue: number) {
     [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume]
   );
 
+  const isFirstRenderRef = useRef(true);
   useEffect(() => {
-    setVolume(maxVolume);
+    if (!isFirstRenderRef.current) {
+      setVolume(maxVolume);
+    } else {
+      isFirstRenderRef.current = false;
+    }
     clearVolumeFadeInOutTimer();
   }, [maxVolume, clearVolumeFadeInOutTimer]);
 
