@@ -1,4 +1,4 @@
-import { Mic, Stop } from "@mui/icons-material";
+import { Stop } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import React from "react";
 
