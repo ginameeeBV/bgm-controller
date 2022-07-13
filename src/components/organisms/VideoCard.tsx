@@ -25,14 +25,9 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
   const [masterVolume] = useAtom(volumeAtom);
-  const {
-    volume,
-    setVolume,
-    startFadeIn,
-    stopFadeIn,
-    startFadeOut,
-    stopFadeOut,
-  } = useVolume(defaultVolume);
+
+  const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
+    useVolume(defaultVolume);
 
   useEffect(() => {
     setVolume(masterVolume);
@@ -55,8 +50,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
 
   const handleChangeVolume = (newVolume: number) => {
     setVolume(newVolume);
-    stopFadeIn();
-    stopFadeOut();
+    stopFadeInOut();
   };
 
   const handleFadeOut = () => {
