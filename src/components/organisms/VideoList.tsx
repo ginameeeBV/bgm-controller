@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { urlsAtom } from "../../stores/videos";
 import VideoCard from "./VideoCard";
 import EmptyList from "../molecules/EmptyList";
+import DeleteButton from "../atoms/DeleteButton";
 
 function VideoList() {
   const [urls, setUrls] = useAtom(urlsAtom);
@@ -22,21 +23,9 @@ function VideoList() {
           {urls.map((url) => (
             <Grid item xs={12} sm={6} md={3} key={url}>
               <Box sx={{ position: "relative" }}>
-                <Button
-                  sx={{
-                    position: "absolute",
-                    top: "16px",
-                    right: "16px",
-                    "&:hover": {
-                      color: "white",
-                      backgroundColor: "primary.main",
-                    },
-                    backgroundColor: "white",
-                  }}
-                  onClick={() => handleRemoveVideoItem(url)}
-                >
-                  <Delete />
-                </Button>
+                <Box sx={{ position: "absolute", top: "16px", right: "16px" }}>
+                  <DeleteButton onClick={() => handleRemoveVideoItem(url)} />
+                </Box>
                 <VideoCard url={url} />
               </Box>
             </Grid>
