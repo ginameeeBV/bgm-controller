@@ -1,6 +1,6 @@
 import { Container, Stack, TextField } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import {
   currPlayedUrlAtom,
   fadeRatioAtom,

@@ -1,4 +1,3 @@
-import React from "react";
 import MainTemplate from "./components/templates/MainTemplate";
 import VideoList from "./components/organisms/VideoList";
 import GlobalController from "./components/organisms/GlobalController";

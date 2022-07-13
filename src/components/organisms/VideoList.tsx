@@ -1,5 +1,4 @@
-import { Container, Grid, Button, Box } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { Container, Grid, Box } from "@mui/material";
 import { useAtom } from "jotai";
 import { urlsAtom } from "../../stores/videos";
 import VideoCard from "./VideoCard";
