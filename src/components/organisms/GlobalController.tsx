@@ -87,9 +87,9 @@ function GlobalController() {
             <VolumeController onVolumeChange={handleChangeVolume} />
           </Stack>
           <TextField
-            label="Fade Out Ratio"
+            label="Fade In/Out Speed"
             defaultValue={15}
-            sx={{ width: 110 }}
+            sx={{ width: 180 }}
             type="number"
             value={fadeRatio}
             onChange={handleChangeFadeRatio}
