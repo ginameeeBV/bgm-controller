@@ -1,19 +1,36 @@
 import { Add, YouTube } from "@mui/icons-material";
 import { Divider, IconButton, InputBase, Paper } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { FormEvent } from "react";
+import { FormEventHandler, ChangeEventHandler } from "react";
 import { useState } from "react";
 import { urlsAtom } from "../../stores/videos";
+
+const YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v=";
 
 function AddForm() {
   const [urls, setUrls] = useAtom(urlsAtom);
   const [url, setUrl] = useState<string>("");
 
-  const handleAddVideo = (e: FormEvent) => {
+  const handleAddVideo: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (!urls.includes(url)) {
-      setUrls([...urls, url]);
+    const isUrl = /^https?:\/\//.test(url);
+    let videoSrc = url;
+    if (!isUrl) {
+      const isYoutubeId = window.confirm(
+        `Do you mean '${YOUTUBE_URL_BASE}${url}'?`
+      );
+      if (isYoutubeId) {
+        videoSrc = `${YOUTUBE_URL_BASE}${url}`;
+      }
     }
+    if (!urls.includes(url)) {
+      setUrls([...urls, videoSrc]);
+    }
+    setUrl("");
+  };
+
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setUrl(e.currentTarget.value);
   };
 
   const handlePlayVideo = () => {
@@ -36,14 +53,15 @@ function AddForm() {
         placeholder="Add Youtube Video URL"
         inputProps={{ "aria-label": "add Youtube video" }}
         value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        onChange={handleInputChange}
       />
       <IconButton
-        type="submit"
+        type="button"
         sx={{ p: "10px" }}
         aria-label="search"
         onClick={handlePlayVideo}
         disabled={!url}
+        title={"open in youtube"}
       >
         <YouTube />
       </IconButton>
