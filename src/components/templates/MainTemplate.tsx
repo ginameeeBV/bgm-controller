@@ -12,6 +12,7 @@ const styles = {
     position: "fixed",
     width: "100vw",
     height: "80px",
+    zIndex: 1,
   },
   get main() {
     return {
@@ -20,10 +21,12 @@ const styles = {
     };
   },
   footer: {
+    zIndex: 1,
     position: "fixed",
     width: "100%",
     bottom: 0,
-    heigth: "auto",
+    height: "auto",
+    backgroundColor: "white",
   },
 };
 
