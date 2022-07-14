@@ -63,7 +63,7 @@ function VolumeController({
         max={MAX_VALUE}
         min={MIN_VALUE}
         sx={{
-          display: { xs: "none", md: "none", xl: "unset" },
+          display: { xs: "none", md: "unset", xl: "unset" },
         }}
         onChange={handleSlideChange}
       />
