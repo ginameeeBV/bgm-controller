@@ -1,4 +1,4 @@
-import { Loop, LoopOutlined } from "@mui/icons-material";
+import { Loop } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
 import { ChangeEventHandler } from "react";
 
@@ -13,8 +13,8 @@ function LoopCheckBox({ onChange, defaultChecked = false }: IProps) {
   };
   return (
     <Checkbox
-      icon={<LoopOutlined sx={{ color: "grey" }} />}
-      checkedIcon={<Loop sx={{ color: "primary.main" }} />}
+      icon={<Loop sx={{ color: "grey.300" }} />}
+      checkedIcon={<Loop sx={{ color: "primary.sub" }} />}
       onChange={handleChange}
       defaultChecked={defaultChecked}
     />
