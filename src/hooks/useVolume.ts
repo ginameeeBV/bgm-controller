@@ -1,14 +1,14 @@
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fadeInOutTimeAtom } from "../stores/videos";
+import { fadeInOutTimeAtom, volumeAtom } from "../stores/videos";
 
-const MAX_VOLUME = 100;
 const MIN_VOLUME = 0;
 const FADE_IN_OUT_UNIT = 2;
 
-function useVolume(defaultVolume: number) {
-  const [volume, setVolume] = useState(defaultVolume);
+function useVolume(defaultValue: number) {
+  const [volume, setVolume] = useState(defaultValue);
   const [fadeInOutTime] = useAtom(fadeInOutTimeAtom);
+  const [maxVolume] = useAtom(volumeAtom);
 
   const volumeFadeInOutTimer = useRef<number>();
 
@@ -36,41 +36,35 @@ function useVolume(defaultVolume: number) {
   );
 
   const startFadeOut = useCallback(
-    (startVolume = MAX_VOLUME, destVolume = MIN_VOLUME) => {
+    (startVolume = maxVolume, destVolume = MIN_VOLUME) => {
       clearVolumeFadeInOutTimer();
       doFadeThings(startVolume, destVolume, () => {
-        setVolume((prevVolume) =>
-          prevVolume > destVolume ? prevVolume - FADE_IN_OUT_UNIT : prevVolume
-        );
+        setVolume((prevVolume) => {
+          const nextVolume = prevVolume - FADE_IN_OUT_UNIT;
+          return nextVolume > destVolume ? nextVolume : destVolume;
+        });
       });
     },
-    [clearVolumeFadeInOutTimer, doFadeThings]
+    [clearVolumeFadeInOutTimer, doFadeThings, maxVolume]
   );
 
   const startFadeIn = useCallback(
-    (startVolume = MIN_VOLUME, destVolume = MAX_VOLUME) => {
+    (startVolume = MIN_VOLUME, destVolume = maxVolume) => {
       clearVolumeFadeInOutTimer();
       doFadeThings(startVolume, destVolume, () => {
-        setVolume((prevVolume) =>
-          prevVolume < destVolume ? prevVolume + FADE_IN_OUT_UNIT : prevVolume
-        );
+        setVolume((prevVolume) => {
+          const nextVolume = prevVolume + FADE_IN_OUT_UNIT;
+          return nextVolume < destVolume ? nextVolume : destVolume;
+        });
       });
     },
-    [clearVolumeFadeInOutTimer, doFadeThings]
+    [clearVolumeFadeInOutTimer, doFadeThings, maxVolume]
   );
 
   useEffect(() => {
-    if (volume <= MIN_VOLUME) {
-      setVolume(MIN_VOLUME);
-      clearVolumeFadeInOutTimer();
-      return;
-    }
-
-    if (volume >= MAX_VOLUME) {
-      setVolume(MAX_VOLUME);
-      clearVolumeFadeInOutTimer();
-    }
-  }, [clearVolumeFadeInOutTimer, volume]);
+    setVolume(maxVolume);
+    clearVolumeFadeInOutTimer();
+  }, [maxVolume, clearVolumeFadeInOutTimer]);
 
   return {
     volume,

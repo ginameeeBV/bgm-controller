@@ -50,15 +50,24 @@ function GlobalController() {
   const handleChangeFadeRatio = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    const value = e.target.value;
-    setFadeInOutTime(Number(value));
+    const min = 0;
+    const value = Number(e.target.value);
+
+    if (!isNaN(value) && value >= min) {
+      setFadeInOutTime(Number(value));
+    }
   };
 
   const handleChangeMinVolumeForSpeak = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    const value = e.target.value;
-    setMinVolumeForSpeak(Number(value));
+    const min = 0;
+    const max = 100;
+    const value = Number(e.target.value);
+
+    if (!isNaN(value) && value >= min && value <= max) {
+      setMinVolumeForSpeak(Number(value));
+    }
   };
 
   return (
@@ -101,7 +110,6 @@ function GlobalController() {
           <TextField
             label="Music Volume For Speaking"
             sx={{ width: 180 }}
-            type="number"
             value={minVolumeForSpeak}
             onChange={handleChangeMinVolumeForSpeak}
             inputProps={{
