@@ -1,6 +1,12 @@
 import { useAtom } from "jotai";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { fadeInOutTimeAtom, volumeAtom } from "../stores/videos";
+
+interface IFadeConfig {
+  startVolume: number;
+  endVolume: number;
+  unit: number;
+}
 
 const MIN_VOLUME = 0;
 const FADE_IN_OUT_UNIT = 2;
@@ -12,6 +18,13 @@ function useVolume(defaultValue: number = MIN_VOLUME) {
 
   const volumeFadeInOutTimer = useRef<number>();
 
+  const fadeInOutUnit = useMemo(() => {
+    if (fadeInOutTime >= 3000) {
+      return 1;
+    }
+    return FADE_IN_OUT_UNIT;
+  }, [fadeInOutTime]);
+
   const clearVolumeFadeInOutTimer = useCallback(() => {
     if (volumeFadeInOutTimer.current) {
       window.clearInterval(volumeFadeInOutTimer.current);
@@ -19,9 +32,12 @@ function useVolume(defaultValue: number = MIN_VOLUME) {
   }, []);
 
   const startFadeInOut = useCallback(
-    (startVolume: number, endVolume: number, intervalCallback: () => void) => {
+    (
+      { startVolume, endVolume, unit }: IFadeConfig,
+      intervalCallback: () => void
+    ) => {
       const interval = Math.floor(
-        fadeInOutTime / (Math.abs(startVolume - endVolume) / FADE_IN_OUT_UNIT)
+        fadeInOutTime / (Math.abs(startVolume - endVolume) / unit)
       );
 
       if (interval === 0) {
@@ -38,27 +54,33 @@ function useVolume(defaultValue: number = MIN_VOLUME) {
   const startFadeOut = useCallback(
     (startVolume = maxVolume, destVolume = MIN_VOLUME) => {
       clearVolumeFadeInOutTimer();
-      startFadeInOut(startVolume, destVolume, () => {
-        setVolume((prevVolume) => {
-          const nextVolume = prevVolume - FADE_IN_OUT_UNIT;
-          return nextVolume > destVolume ? nextVolume : destVolume;
-        });
-      });
+      startFadeInOut(
+        { startVolume, endVolume: destVolume, unit: fadeInOutUnit },
+        () => {
+          setVolume((prevVolume) => {
+            const nextVolume = prevVolume - fadeInOutUnit;
+            return nextVolume > destVolume ? nextVolume : destVolume;
+          });
+        }
+      );
     },
-    [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume]
+    [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume, fadeInOutUnit]
   );
 
   const startFadeIn = useCallback(
     (startVolume = MIN_VOLUME, destVolume = maxVolume) => {
       clearVolumeFadeInOutTimer();
-      startFadeInOut(startVolume, destVolume, () => {
-        setVolume((prevVolume) => {
-          const nextVolume = prevVolume + FADE_IN_OUT_UNIT;
-          return nextVolume < destVolume ? nextVolume : destVolume;
-        });
-      });
+      startFadeInOut(
+        { startVolume, endVolume: destVolume, unit: fadeInOutUnit },
+        () => {
+          setVolume((prevVolume) => {
+            const nextVolume = prevVolume + fadeInOutUnit;
+            return nextVolume < destVolume ? nextVolume : destVolume;
+          });
+        }
+      );
     },
-    [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume]
+    [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume, fadeInOutUnit]
   );
 
   return {
