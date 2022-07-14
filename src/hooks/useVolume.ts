@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { fadeInOutTimeAtom, volumeAtom } from "../stores/videos";
 
 const MIN_VOLUME = 0;
@@ -60,16 +60,6 @@ function useVolume(defaultValue: number = MIN_VOLUME) {
     },
     [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume]
   );
-
-  const isFirstRenderRef = useRef(true);
-  useEffect(() => {
-    if (!isFirstRenderRef.current) {
-      setVolume(maxVolume);
-    } else {
-      isFirstRenderRef.current = false;
-    }
-    clearVolumeFadeInOutTimer();
-  }, [maxVolume, clearVolumeFadeInOutTimer]);
 
   return {
     volume,

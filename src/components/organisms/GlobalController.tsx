@@ -45,6 +45,9 @@ function GlobalController() {
   };
   const handleChangeVolume = (value: number) => {
     setVolume(value);
+    if (isOnMic) {
+      setIsOnMic(false);
+    }
   };
 
   const handleChangeFadeRatio = (
