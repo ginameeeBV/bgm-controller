@@ -4,11 +4,12 @@ import React from "react";
 
 interface IProps {
   onClick?: () => unknown;
+  disabled?: boolean;
 }
 
-function StopButton({ onClick = () => undefined }: IProps) {
+function StopButton({ onClick = () => undefined, disabled = false }: IProps) {
   return (
-    <Button size="small" onClick={onClick}>
+    <Button size="small" onClick={onClick} disabled={disabled}>
       <Stop />
     </Button>
   );
