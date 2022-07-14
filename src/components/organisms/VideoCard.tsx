@@ -29,7 +29,7 @@ interface IProps {
 
 function VideoCard({ url, defaultVolume = 0 }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
-  const [playedRate, setPlayedRate] = useState<number>(0);
+  const [timeBarValue, setTimeBarValue] = useState<number>(0);
 
   const playerRef = useRef<ReactPlayer>(null);
 
@@ -71,7 +71,7 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
   const handleStop = () => {
     setPlaying(false);
     playerRef.current?.seekTo(0);
-    setPlayedRate(0);
+    setTimeBarValue(0);
   };
 
   const handleChangeVolume = (newVolume: number) => {
@@ -89,14 +89,14 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
 
   const handleSeekChange = (value: number) => {
     const floatRate = value / 100;
-    setPlayedRate(value);
+    setTimeBarValue(value);
     playerRef.current?.seekTo(floatRate);
   };
 
   const handleProgress = ({ played }: IProgressStatus) => {
     if (!seeking && playing) {
-      const rate = played * 100;
-      setPlayedRate(rate);
+      const rate = Math.ceil(played * 100);
+      setTimeBarValue(rate);
     }
   };
 
@@ -191,7 +191,7 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
         <Stack width="100%" spacing={1}>
           <Box sx={{ px: 1 }}>
             <VideoTimeBar
-              value={playedRate}
+              value={timeBarValue}
               onChange={handleSeekChange}
               onMouseDown={handleSeekMouseDown}
               onMouseUp={handleSeekMouseUp}
