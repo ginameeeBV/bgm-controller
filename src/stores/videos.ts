@@ -7,10 +7,10 @@ export const volumeAtom = atom<number, number, void>(100, (_get, set, arg) => {
   set(volumeAtom, arg);
 });
 
-export const fadeRatioAtom = atom<number, number, void>(
-  100,
+export const fadeInOutTimeAtom = atom<number, number, void>(
+  1000,
   (_get, set, arg) => {
-    set(fadeRatioAtom, arg);
+    set(fadeInOutTimeAtom, arg);
   }
 );
 

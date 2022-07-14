@@ -1,15 +1,14 @@
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fadeRatioAtom } from "../stores/videos";
+import { fadeInOutTimeAtom } from "../stores/videos";
 
 const MAX_VOLUME = 100;
 const MIN_VOLUME = 0;
-const FADE_IN_OUT_INTERVAL = 80;
-const FADE_IN_OUT_UNIT = 4;
+const FADE_IN_OUT_UNIT = 2;
 
 function useVolume(defaultVolume: number) {
   const [volume, setVolume] = useState(defaultVolume);
-  const [fadeRatio] = useAtom(fadeRatioAtom);
+  const [fadeInOutTime] = useAtom(fadeInOutTimeAtom);
 
   const volumeFadeInOutTimer = useRef<number>();
 
@@ -19,32 +18,45 @@ function useVolume(defaultVolume: number) {
     }
   }, []);
 
-  const startFadeOut = useCallback(
-    (destVolume = MIN_VOLUME) => {
-      clearVolumeFadeInOutTimer();
-      const fadeOutUnit = FADE_IN_OUT_UNIT * (fadeRatio / 100);
+  const doFadeThings = useCallback(
+    (startVolume: number, endVolume: number, intervalCallback: () => void) => {
+      const interval = Math.floor(
+        fadeInOutTime / (Math.abs(startVolume - endVolume) / FADE_IN_OUT_UNIT)
+      );
 
-      volumeFadeInOutTimer.current = window.setInterval(() => {
-        setVolume((prevVolume) =>
-          prevVolume > destVolume ? prevVolume - fadeOutUnit : prevVolume
-        );
-      }, FADE_IN_OUT_INTERVAL);
+      if (interval === 0) {
+        setVolume(endVolume);
+      }
+      volumeFadeInOutTimer.current = window.setInterval(
+        intervalCallback,
+        interval
+      );
     },
+    [fadeInOutTime]
+  );
 
-    [setVolume, clearVolumeFadeInOutTimer, fadeRatio]
+  const startFadeOut = useCallback(
+    (startVolume = MAX_VOLUME, destVolume = MIN_VOLUME) => {
+      clearVolumeFadeInOutTimer();
+      doFadeThings(startVolume, destVolume, () => {
+        setVolume((prevVolume) =>
+          prevVolume > destVolume ? prevVolume - FADE_IN_OUT_UNIT : prevVolume
+        );
+      });
+    },
+    [clearVolumeFadeInOutTimer, doFadeThings]
   );
 
   const startFadeIn = useCallback(
-    (destVolume = MAX_VOLUME) => {
+    (startVolume = MIN_VOLUME, destVolume = MAX_VOLUME) => {
       clearVolumeFadeInOutTimer();
-      const fadeInUnit = FADE_IN_OUT_UNIT * (fadeRatio / 100);
-      volumeFadeInOutTimer.current = window.setInterval(() => {
+      doFadeThings(startVolume, destVolume, () => {
         setVolume((prevVolume) =>
-          prevVolume < destVolume ? prevVolume + fadeInUnit : prevVolume
+          prevVolume < destVolume ? prevVolume + FADE_IN_OUT_UNIT : prevVolume
         );
-      }, FADE_IN_OUT_INTERVAL);
+      });
     },
-    [setVolume, clearVolumeFadeInOutTimer, fadeRatio]
+    [clearVolumeFadeInOutTimer, doFadeThings]
   );
 
   useEffect(() => {

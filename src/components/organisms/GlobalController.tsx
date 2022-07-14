@@ -1,9 +1,9 @@
 import { Container, Stack, TextField } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import {
   currPlayedUrlAtom,
-  fadeRatioAtom,
+  fadeInOutTimeAtom,
   isOnMicAtom,
   minVolumeForSpeakAtom,
   prevPlayedUrlAtom,
@@ -16,7 +16,7 @@ import PlayButton from "../atoms/PlayButton";
 import VolumeController from "../molecules/VolumeController";
 
 function GlobalController() {
-  const [fadeRatio, setFadeRatio] = useAtom(fadeRatioAtom);
+  const [fadeInOutTime, setFadeInOutTime] = useAtom(fadeInOutTimeAtom);
   const [, setVolume] = useAtom(volumeAtom);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
   const [prevPlayedUrl, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
@@ -51,7 +51,7 @@ function GlobalController() {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const value = e.target.value;
-    setFadeRatio(Number(value));
+    setFadeInOutTime(Number(value));
   };
 
   const handleChangeMinVolumeForSpeak = (
@@ -88,15 +88,14 @@ function GlobalController() {
             <VolumeController onVolumeChange={handleChangeVolume} />
           </Stack>
           <TextField
-            label="Fade In/Out Speed"
+            label="Fade In/Out Time(ms)"
             defaultValue={15}
             sx={{ width: 180 }}
             type="number"
-            value={fadeRatio}
+            value={fadeInOutTime}
             onChange={handleChangeFadeRatio}
             inputProps={{
               min: 0,
-              max: 100,
             }}
           />
           <TextField
