@@ -15,7 +15,7 @@ function EmptyList() {
       </Typography>
       <Typography variant="h5" align="center" color="text.secondary" paragraph>
         Add videos for background music <br />
-        and controll them easily.
+        and control them easily.
       </Typography>
     </Stack>
   );
