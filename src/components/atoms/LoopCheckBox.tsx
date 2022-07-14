@@ -7,7 +7,7 @@ interface IProps {
   defaultChecked?: boolean;
 }
 
-function LoopButton({ onChange, defaultChecked = false }: IProps) {
+function LoopCheckBox({ onChange, defaultChecked = false }: IProps) {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     onChange?.(e.target.checked);
   };
@@ -21,4 +21,4 @@ function LoopButton({ onChange, defaultChecked = false }: IProps) {
   );
 }
 
-export default LoopButton;
+export default LoopCheckBox;

@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import LoopButton from "../atoms/LoopButton";
+import LoopCheckBox from "../atoms/LoopCheckBox";
 import PauseButton from "../atoms/PauseButton";
 import PlayButton from "../atoms/PlayButton";
 import StopButton from "../atoms/StopButton";
@@ -25,7 +25,7 @@ function ControlButtons({
       <PlayButton onClick={onPlay} disabled={playing} />
       <PauseButton onClick={onPause} disabled={!playing} />
       <StopButton onClick={onStop} />
-      <LoopButton defaultChecked={defaultIsLoop} onChange={onLoopChange} />
+      <LoopCheckBox defaultChecked={defaultIsLoop} onChange={onLoopChange} />
     </Stack>
   );
 }
