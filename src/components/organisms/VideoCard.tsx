@@ -36,6 +36,9 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   }, [masterVolume, setVolume]);
 
   const handlePlay = () => {
+    if (playing && currPlayedUrl === url) {
+      return;
+    }
     setPlaying(true);
     if (currPlayedUrl) {
       setPrevPlayedUrl(currPlayedUrl);
@@ -45,8 +48,11 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   };
 
   const handlePause = () => {
-    startFadeOut();
+    if (!playing) {
+      return;
+    }
 
+    startFadeOut();
     if (currPlayedUrl && currPlayedUrl === url) {
       setPrevPlayedUrl(currPlayedUrl);
       setCurrPlayedUrl("");

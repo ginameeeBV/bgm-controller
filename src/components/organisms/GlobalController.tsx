@@ -31,6 +31,7 @@ function GlobalController() {
 
   const handlePlay = () => {
     setCurrPlayedUrl(prevPlayedUrl);
+    setPrevPlayedUrl(currPlayedUrl);
     if (isOnMic) {
       setIsOnMic(false);
     }
@@ -74,8 +75,8 @@ function GlobalController() {
         ) : (
           <MicButton onClick={handleSpeak} />
         )}
-        <PlayButton onClick={handlePlay} />
-        <PauseButton onClick={handlePause} />
+        <PlayButton onClick={handlePlay} disabled={!prevPlayedUrl} />
+        <PauseButton onClick={handlePause} disabled={!currPlayedUrl} />
         <Stack direction="row" sx={{ width: "auto" }} spacing={2}>
           <Stack
             alignItems="center"
