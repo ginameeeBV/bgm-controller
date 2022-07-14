@@ -79,14 +79,23 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
   }, [currPlayedUrl, url, startFadeOut, startFadeIn]);
 
   useEffect(() => {
+    if (currPlayedUrl !== url) {
+      return;
+    }
+
     if (isOnMic) {
       startFadeOut(minVolumeForSpeak);
     } else {
-      if (playing) {
-        startFadeIn();
-      }
+      startFadeIn();
     }
-  }, [isOnMic, startFadeOut, startFadeIn, minVolumeForSpeak, playing]);
+  }, [
+    isOnMic,
+    startFadeOut,
+    startFadeIn,
+    minVolumeForSpeak,
+    currPlayedUrl,
+    url,
+  ]);
 
   return (
     <Card
