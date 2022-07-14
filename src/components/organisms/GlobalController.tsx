@@ -83,9 +83,9 @@ function GlobalController() {
         width="100%"
       >
         {isOnMic ? (
-          <MicOffButton onClick={handleSpeak} />
-        ) : (
           <MicButton onClick={handleSpeak} />
+        ) : (
+          <MicOffButton onClick={handleSpeak} />
         )}
         <PlayButton onClick={handlePlay} disabled={!prevPlayedUrl} />
         <PauseButton onClick={handlePause} disabled={!currPlayedUrl} />
