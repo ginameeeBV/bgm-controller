@@ -15,7 +15,7 @@ function useVolume(defaultVolume: number) {
 
   const clearVolumeFadeInOutTimer = useCallback(() => {
     if (volumeFadeInOutTimer.current) {
-      window.clearTimeout(volumeFadeInOutTimer.current);
+      window.clearInterval(volumeFadeInOutTimer.current);
     }
   }, []);
 
