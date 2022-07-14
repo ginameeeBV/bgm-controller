@@ -11,15 +11,15 @@ import {
   minVolumeForSpeakAtom,
   prevPlayedUrlAtom,
   volumeAtom,
+  noLoopVideosAtom,
 } from "../../stores/videos";
 
 interface IProps {
   url: string;
   defaultVolume?: number;
-  isLoop?: boolean;
 }
 
-function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
+function VideoCard({ url, defaultVolume = 0 }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const playerRef = useRef<ReactPlayer>(null);
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
@@ -27,6 +27,7 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
   const [masterVolume] = useAtom(volumeAtom);
+  const [noLoopVideos, setNoLoopVideos] = useAtom(noLoopVideosAtom);
 
   const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
     useVolume(defaultVolume);
@@ -64,6 +65,15 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
     setVolume(newVolume);
     stopFadeInOut();
   };
+
+  const handleToggleLoop = (nextIsLoop: boolean = false) => {
+    if (nextIsLoop) {
+      setNoLoopVideos(noLoopVideos.filter((noLoopUrl) => noLoopUrl !== url));
+    } else {
+      setNoLoopVideos([...noLoopVideos, url]);
+    }
+  };
+  const isLoop = !noLoopVideos.includes(url);
 
   useEffect(() => {
     if (volume <= 0) {
@@ -127,18 +137,20 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
           url={url}
           playing={playing}
           volume={volume / 100}
-          loop={isLoop}
           onPause={handlePause}
           onPlay={handlePlay}
+          loop={isLoop}
         />
       </CardMedia>
       <CardActions>
         <Stack width="100%" spacing={1}>
           <ControlButtons
             playing={playing}
+            defaultIsLoop={isLoop}
             onPlay={handlePlay}
             onPause={handlePause}
             onStop={handleStop}
+            onLoopChange={handleToggleLoop}
           />
           <Divider />
           <VolumeController
