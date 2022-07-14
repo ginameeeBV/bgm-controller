@@ -104,6 +104,14 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
     }
   }, [isOnMic, startFadeOut, startFadeIn]);
 
+  const handleEnded = () => {
+    setPlaying(false);
+    if (currPlayedUrl && currPlayedUrl === url) {
+      setPrevPlayedUrl(currPlayedUrl);
+      setCurrPlayedUrl("");
+    }
+  };
+
   // masterVolume effect
   const isFirstRenderRef = useRef(true);
   useEffect(() => {
@@ -139,6 +147,7 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
           volume={volume / 100}
           onPause={handlePause}
           onPlay={handlePlay}
+          onEnded={handleEnded}
           loop={isLoop}
         />
       </CardMedia>
