@@ -69,6 +69,7 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
     }
   }, [volume]);
 
+  // currPlayedUrl effect
   useEffect(() => {
     if (url !== currPlayedUrl) {
       startFadeOut();
@@ -78,25 +79,18 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
     }
   }, [currPlayedUrl, url, startFadeOut, startFadeIn]);
 
+  // isOnMic effect
   useEffect(() => {
     if (currPlayedUrl !== url) {
       return;
     }
 
     if (isOnMic) {
-      startFadeOut(volume, minVolumeForSpeak);
+      startFadeOut(100, minVolumeForSpeak);
     } else {
       startFadeIn();
     }
-  }, [
-    isOnMic,
-    startFadeOut,
-    startFadeIn,
-    minVolumeForSpeak,
-    currPlayedUrl,
-    url,
-    volume,
-  ]);
+  }, [isOnMic, startFadeOut, startFadeIn]);
 
   return (
     <Card
