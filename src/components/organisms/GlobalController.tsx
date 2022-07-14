@@ -103,7 +103,6 @@ function GlobalController() {
             label="Fade In/Out Time(ms)"
             defaultValue={15}
             sx={{ width: 180 }}
-            type="number"
             value={fadeInOutTime}
             onChange={handleChangeFadeRatio}
             inputProps={{
