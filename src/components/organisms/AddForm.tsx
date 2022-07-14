@@ -17,7 +17,7 @@ function AddForm() {
     let videoSrc = url;
     if (!isUrl) {
       const isYoutubeId = window.confirm(
-        `do you mean is '${YOUTUBE_URL_BASE}${url}'?`
+        `Do you mean '${YOUTUBE_URL_BASE}${url}'?`
       );
       if (isYoutubeId) {
         videoSrc = `${YOUTUBE_URL_BASE}${url}`;
