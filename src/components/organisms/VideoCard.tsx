@@ -84,7 +84,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
     }
 
     if (isOnMic) {
-      startFadeOut(minVolumeForSpeak);
+      startFadeOut(volume, minVolumeForSpeak);
     } else {
       startFadeIn();
     }
@@ -95,6 +95,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
     minVolumeForSpeak,
     currPlayedUrl,
     url,
+    volume,
   ]);
 
   return (
