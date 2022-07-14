@@ -9,7 +9,7 @@ import {
   currPlayedUrlAtom,
   isOnMicAtom,
   minVolumeForSpeakAtom,
-  masterVolumeAtomRate,
+  masterVolumeRateAtom,
   prevPlayedUrlAtom,
 } from "../../stores/videos";
 
@@ -26,7 +26,7 @@ function VideoCard({ url, defaultVolume = 0, isLoop = true }: IProps) {
   const [, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
-  const [masterVolumeRate] = useAtom(masterVolumeAtomRate);
+  const [masterVolumeRate] = useAtom(masterVolumeRateAtom);
 
   const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
     useVolume(defaultVolume);

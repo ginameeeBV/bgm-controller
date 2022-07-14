@@ -16,7 +16,7 @@ export const masterVolumeAtom = atom<number, number, void>(
 /**
  * @description value is float {n.n}
  */
-export const masterVolumeAtomRate = selectAtom(
+export const masterVolumeRateAtom = selectAtom(
   masterVolumeAtom,
   (volume) => volume / 100
 );
