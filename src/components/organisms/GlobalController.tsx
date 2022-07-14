@@ -91,7 +91,7 @@ function GlobalController() {
             alignItems="center"
             justifyContent="center"
             sx={{
-              width: { xs: 100, md: 100, xl: 250 },
+              width: { xs: 100, md: 250, xl: 250 },
             }}
           >
             <VolumeController
