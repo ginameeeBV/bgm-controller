@@ -1,16 +1,18 @@
 import { Container, Grid, Box } from "@mui/material";
 import { useAtom } from "jotai";
-import { urlsAtom } from "../../stores/videos";
+import { noLoopVideosAtom, urlsAtom } from "../../stores/videos";
 import VideoCard from "./VideoCard";
 import EmptyList from "../molecules/EmptyList";
 import DeleteButton from "../atoms/DeleteButton";
 
 function VideoList() {
   const [urls, setUrls] = useAtom(urlsAtom);
+  const [noLoopVideos, setNoLoopVideos] = useAtom(noLoopVideosAtom);
   const isEmpty = urls.length === 0;
 
   const handleRemoveVideoItem = (targetUrl: string) => {
     setUrls(urls.filter((url) => url !== targetUrl));
+    setNoLoopVideos(noLoopVideos.filter((url) => url !== targetUrl));
   };
 
   return (
