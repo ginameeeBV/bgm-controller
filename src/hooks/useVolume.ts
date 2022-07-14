@@ -18,7 +18,7 @@ function useVolume(defaultValue: number) {
     }
   }, []);
 
-  const doFadeThings = useCallback(
+  const startFadeInOut = useCallback(
     (startVolume: number, endVolume: number, intervalCallback: () => void) => {
       const interval = Math.floor(
         fadeInOutTime / (Math.abs(startVolume - endVolume) / FADE_IN_OUT_UNIT)
@@ -38,27 +38,27 @@ function useVolume(defaultValue: number) {
   const startFadeOut = useCallback(
     (startVolume = maxVolume, destVolume = MIN_VOLUME) => {
       clearVolumeFadeInOutTimer();
-      doFadeThings(startVolume, destVolume, () => {
+      startFadeInOut(startVolume, destVolume, () => {
         setVolume((prevVolume) => {
           const nextVolume = prevVolume - FADE_IN_OUT_UNIT;
           return nextVolume > destVolume ? nextVolume : destVolume;
         });
       });
     },
-    [clearVolumeFadeInOutTimer, doFadeThings, maxVolume]
+    [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume]
   );
 
   const startFadeIn = useCallback(
     (startVolume = MIN_VOLUME, destVolume = maxVolume) => {
       clearVolumeFadeInOutTimer();
-      doFadeThings(startVolume, destVolume, () => {
+      startFadeInOut(startVolume, destVolume, () => {
         setVolume((prevVolume) => {
           const nextVolume = prevVolume + FADE_IN_OUT_UNIT;
           return nextVolume < destVolume ? nextVolume : destVolume;
         });
       });
     },
-    [clearVolumeFadeInOutTimer, doFadeThings, maxVolume]
+    [clearVolumeFadeInOutTimer, startFadeInOut, maxVolume]
   );
 
   useEffect(() => {
