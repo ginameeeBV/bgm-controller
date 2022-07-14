@@ -133,6 +133,7 @@ function VideoCard({ url, defaultVolume = 100, isLoop = true }: IProps) {
       <CardActions>
         <Stack width="100%" spacing={1}>
           <ControlButtons
+            playing={playing}
             onPlay={handlePlay}
             onPause={handlePause}
             onStop={handleStop}
