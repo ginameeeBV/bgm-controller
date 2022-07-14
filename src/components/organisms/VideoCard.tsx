@@ -13,7 +13,15 @@ import {
   volumeAtom,
   noLoopVideosAtom,
 } from "../../stores/videos";
+import VideoTimeBar from "../atoms/VideoTimeBar";
+import { Box } from "@mui/system";
 
+interface IProgressStatus {
+  played: number;
+  playedSeconds: number;
+  loaded: number;
+  loadedSeconds: number;
+}
 interface IProps {
   url: string;
   defaultVolume?: number;
@@ -21,13 +29,17 @@ interface IProps {
 
 function VideoCard({ url, defaultVolume = 0 }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
+  const [playedRate, setPlayedRate] = useState<number>(0);
+
   const playerRef = useRef<ReactPlayer>(null);
+
   const [currPlayedUrl, setCurrPlayedUrl] = useAtom(currPlayedUrlAtom);
   const [, setPrevPlayedUrl] = useAtom(prevPlayedUrlAtom);
   const [isOnMic] = useAtom(isOnMicAtom);
   const [minVolumeForSpeak] = useAtom(minVolumeForSpeakAtom);
   const [masterVolume] = useAtom(volumeAtom);
   const [noLoopVideos, setNoLoopVideos] = useAtom(noLoopVideosAtom);
+  const [seeking, setSeeking] = useState<boolean>(false);
 
   const { volume, setVolume, startFadeIn, startFadeOut, stopFadeInOut } =
     useVolume(defaultVolume);
@@ -59,6 +71,7 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
   const handleStop = () => {
     setPlaying(false);
     playerRef.current?.seekTo(0);
+    setPlayedRate(0);
   };
 
   const handleChangeVolume = (newVolume: number) => {
@@ -73,6 +86,28 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
       setNoLoopVideos([...noLoopVideos, url]);
     }
   };
+
+  const handleSeekChange = (value: number) => {
+    const floatRate = value / 100;
+    setPlayedRate(value);
+    playerRef.current?.seekTo(floatRate);
+  };
+
+  const handleProgress = ({ played }: IProgressStatus) => {
+    if (!seeking && playing) {
+      const rate = played * 100;
+      setPlayedRate(rate);
+    }
+  };
+
+  const handleSeekMouseDown = () => {
+    setSeeking(true);
+  };
+
+  const handleSeekMouseUp = () => {
+    setSeeking(false);
+  };
+
   const isLoop = !noLoopVideos.includes(url);
 
   useEffect(() => {
@@ -149,10 +184,19 @@ function VideoCard({ url, defaultVolume = 0 }: IProps) {
           onPlay={handlePlay}
           onEnded={handleEnded}
           loop={isLoop}
+          onProgress={handleProgress}
         />
       </CardMedia>
       <CardActions>
         <Stack width="100%" spacing={1}>
+          <Box sx={{ px: 1 }}>
+            <VideoTimeBar
+              value={playedRate}
+              onChange={handleSeekChange}
+              onMouseDown={handleSeekMouseDown}
+              onMouseUp={handleSeekMouseUp}
+            />
+          </Box>
           <ControlButtons
             playing={playing}
             defaultIsLoop={isLoop}
