@@ -32,9 +32,6 @@ function GlobalController() {
   const handlePlay = () => {
     setCurrPlayedUrl(prevPlayedUrl);
     setPrevPlayedUrl(currPlayedUrl);
-    if (isOnMic) {
-      setIsOnMic(false);
-    }
   };
 
   const handlePause = () => {

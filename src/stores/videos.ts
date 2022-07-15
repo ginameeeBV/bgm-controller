@@ -45,3 +45,11 @@ export const minVolumeForSpeakAtom = atom<number, number, void>(
     set(minVolumeForSpeakAtom, arg);
   }
 );
+
+export const maxVolumeAtom = atom((get) => {
+  if (get(isOnMicAtom)) {
+    return get(minVolumeForSpeakAtom);
+  } else {
+    return get(volumeAtom);
+  }
+});
