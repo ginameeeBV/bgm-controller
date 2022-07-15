@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { fadeInOutTimeAtom, volumeAtom } from "../stores/videos";
+import { fadeInOutTimeAtom, maxVolumeAtom } from "../stores/videos";
 
 interface IFadeConfig {
   startVolume: number;
@@ -14,7 +14,7 @@ const FADE_IN_OUT_UNIT = 2;
 function useVolume(defaultValue: number = MIN_VOLUME) {
   const [volume, setVolume] = useState(defaultValue);
   const [fadeInOutTime] = useAtom(fadeInOutTimeAtom);
-  const [maxVolume] = useAtom(volumeAtom);
+  const [maxVolume] = useAtom(maxVolumeAtom);
 
   const volumeFadeInOutTimer = useRef<number>();
 
